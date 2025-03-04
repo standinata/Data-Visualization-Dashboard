@@ -24,6 +24,7 @@ $prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
 <html>
 <head>
 	<title>PHP Template - Project 02, INTD 210, 2025</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 
