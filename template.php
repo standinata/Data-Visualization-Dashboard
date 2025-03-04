@@ -15,9 +15,9 @@ $next = $id >= 2 ? 0 : $id+1; // for navigation to next and previous
 $prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
 ############################
 
-// database labels
-$labels =  ['2001', '2006', '2011', '2016'];
-$values = [0, 10, 20, 30, 40, 50];
+// database insert
+// $labels_json = json_encode($data["labels"]);
+// $values_json = json_encode($data["values"]);
 
 ?>
 
@@ -28,6 +28,7 @@ $values = [0, 10, 20, 30, 40, 50];
 <head>
 	<title>PHP Template - Project 02, INTD 210, 2025</title>
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 </head>
 
 
@@ -44,6 +45,7 @@ $values = [0, 10, 20, 30, 40, 50];
 		<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $prev ?>">Previous page</a> --
 	<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $next ?>">Next page</a>
 	</p>
+
 
 
 
