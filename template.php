@@ -15,11 +15,14 @@ $next = $id >= 2 ? 0 : $id+1; // for navigation to next and previous
 $prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
 ############################
 
-
-
-
+// database labels
+$labels =  ['2001', '2006', '2011', '2016'];
+$values = [0, 10, 20, 30, 40, 50];
 
 ?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
