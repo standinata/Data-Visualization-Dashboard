@@ -14,17 +14,40 @@ if ($id == false) { $id = 0; } // default value for id parameter
 $next = $id >= 2 ? 0 : $id+1; // for navigation to next and previous
 $prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
 ############################
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
-<head><title>PHP Template - Project 02, INTD 210, 2025</title></head>
+<head>
+	<title>PHP Template - Project 02, INTD 210, 2025</title>
+</head>
+
+
 <body style="font-family:sans-serif">
 	<h3>The city of <?= $array["cities"][$id]["name"] ?>.</h3>
-	<p><?= $array["cities"][$id]["name"] ?>,
+
+	<p>
+		<?= $array["cities"][$id]["name"] ?>,
 	a city in <?= $array["cities"][$id]["country"] ?>,
-	has a population of <?= $array["cities"][$id]["population"] ?> people.</p>
-	<p><a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $prev ?>">Previous page</a> --
-	<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $next ?>">Next page</a></p>
+	has a population of <?= $array["cities"][$id]["population"] ?> people.
+	</p>
+
+	<p>
+		<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $prev ?>">Previous page</a> --
+	<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $next ?>">Next page</a>
+	</p>
+
+
+
+
+
+
+
+
 <div><pre><?php // for debugging /////////////////////////
 // var_dump($_GET);	// uncomment this if needed
 // var_dump($id);		// uncomment this if needed
