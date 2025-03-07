@@ -1,23 +1,10 @@
 <?php
-// /////////////////////////
-// example of how to get parameters from the URL (AKA query string) in PHP
-// and then use these to select the right data from a JSON file, making this a PHP Template
-// Gil Barros <gil.barros@formato.com.br>, Feb/2024
-// /////////////////////////
 
 $json = file_get_contents('data.json'); // get the external file
 $array = json_decode($json, true); // transform JSON format into an Array in PHP
 
 $id = $_GET["id"]; // getting the ID from the URL
 if ($id == false) { $id = 0; } // default value for id parameter
-
-$next = $id >= 2 ? 0 : $id+1; // for navigation to next and previous
-$prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
-############################
-
-// database insert
-// $labels_json = json_encode($data["labels"]);
-// $values_json = json_encode($data["values"]);
 
 ?>
 
@@ -34,10 +21,20 @@ $prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
 
 <body style="font-family:sans-serif">
 
+<!-- Title div -->
+<div>
+<h1>Which area spends more of their income on housing rent?</h1>
+</div>
 
+<!-- Compare 2 areas -->
+<div>
+<h3>Compare 2 areas all around Vancouver over the course of 15 years</h3>
+</div>
 
-
-
+<!-- Conclusion -->
+<div>
+<h3>Area that needs improvement</h3>
+</div>
 
 
 
