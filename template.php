@@ -33,20 +33,7 @@ $prev = $id <= 0 ? 2 : $id-1; // for navigation to next and previous
 
 
 <body style="font-family:sans-serif">
-	<h3>The city of <?= $array["cities"][$id]["name"] ?>.</h3>
 
-	<!-- <p>
-		<?= $array["cities"][$id]["name"] ?>,
-	a city in <?= $array["cities"][$id]["country"] ?>,
-	has a population of <?= $array["cities"][$id]["population"] ?> people.
-	</p> -->
-
-	
-
-	<p>
-		<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $prev ?>">Previous page</a> --
-	<a href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $next ?>">Next page</a>
-	</p>
 
 
 
