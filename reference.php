@@ -1,103 +1,141 @@
 <?php
-// Sample data for Downtown, Kitsilano, and Vancouver City
+// JSON data for Downtown and Arbutus Ridge
 $data = [
-    'downtown' => [
-        'area1' => [10, 20, 30, 40, 50],
-        'area2' => [15, 25, 35, 45, 55],
-        'area3' => [20, 30, 40, 50, 60],
-    ],
-    'kitsilano' => [
-        'area1' => [5, 15, 25, 35, 45],
-        'area2' => [10, 20, 30, 40, 50],
-        'area3' => [15, 25, 35, 45, 55],
-    ],
-    'vancouver_city' => [
-        'area1' => [12, 22, 32, 42, 52],
-        'area2' => [18, 28, 38, 48, 58],
-        'area3' => [22, 32, 42, 52, 62],
-    ],
+    'downtown' => [46, 48, 46, 44], // 2001 to 2016 for Downtown
+    'arbutus_ridge' => [34, 36, 43, 45, 39.5], // Values for Arbutus Ridge
 ];
-
-// Fetch the area from GET or set default
-$selected_area = isset($_GET['area']) ? $_GET['area'] : 'area1';
-
-// Get the data based on selection
-$downtown_data = $data['downtown'][$selected_area];
-$kitsilano_data = $data['kitsilano'][$selected_area];
-$vancouver_city_data = $data['vancouver_city'][$selected_area];
-
-// Encode the data as JSON to pass to JavaScript
-$downtown_json = json_encode($downtown_data);
-$kitsilano_json = json_encode($kitsilano_data);
-$vancouver_city_json = json_encode($vancouver_city_data);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area Graphs</title>
+    <title>Graph Layout</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .chart-container {
+            width: 45%;
+            height: 400px;
+        }
+        select {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Choose an Area</h1>
-
-    <!-- Dropdown to choose area -->
-    <form method="GET">
-        <select name="area" onchange="this.form.submit()">
-            <option value="area1" <?php echo ($selected_area == 'area1') ? 'selected' : ''; ?>>Area 1</option>
-            <option value="area2" <?php echo ($selected_area == 'area2') ? 'selected' : ''; ?>>Area 2</option>
-            <option value="area3" <?php echo ($selected_area == 'area3') ? 'selected' : ''; ?>>Area 3</option>
+    <!-- Downtown Chart Container -->
+    <div class="chart-container">
+        <h3>Downtown Data</h3>
+        <select id="downtown-selector">
+            <option value="downtown">Downtown</option>
+            <option value="arbutus_ridge">Arbutus Ridge</option>
         </select>
-    </form>
+        <canvas id="downtown-chart"></canvas>
+    </div>
 
-    <h2>Downtown</h2>
-    <canvas id="downtownChart" width="400" height="200"></canvas>
-    
-    <h2>Kitsilano</h2>
-    <canvas id="kitsilanoChart" width="400" height="200"></canvas>
+    <!-- Arbutus Ridge Chart Container -->
+    <div class="chart-container">
+        <h3>Arbutus Ridge Data</h3>
+        <select id="arbutus-selector">
+            <option value="downtown">Downtown</option>
+            <option value="arbutus_ridge">Arbutus Ridge</option>
+        </select>
+        <canvas id="arbutus-chart"></canvas>
+    </div>
 
     <script>
-        // Get data from PHP (already encoded as JSON)
-        const downtownData = <?php echo $downtown_json; ?>;
-        const kitsilanoData = <?php echo $kitsilano_json; ?>;
-        const vancouverCityData = <?php echo $vancouver_city_json; ?>;
+        // PHP Data passed as JSON
+        const data = <?php echo json_encode($data); ?>;
+        
+        // Labels for the x-axis (years or time periods)
+        const labels = ['2001', '2002', '2003', '2004']; // Example years for both areas
 
-        // Create Downtown Chart
-        const ctxDowntown = document.getElementById('downtownChart').getContext('2d');
-        new Chart(ctxDowntown, {
-            type: 'line',
+        // Setup for Downtown chart
+        const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
+        const downtownChart = new Chart(downtownCtx, {
+            type: 'line', // Line chart
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // Example months
+                labels: labels,
                 datasets: [{
                     label: 'Downtown Data',
-                    data: downtownData,
-                    borderColor: 'rgb(75, 192, 192)',
-                    fill: false
-                }, {
-                    label: 'Vancouver City',
-                    data: vancouverCityData,
-                    borderColor: 'rgb(255, 99, 132)',
-                    fill: false
+                    data: data.downtown, // Default data
+                    borderColor: 'rgba(54, 162, 235, 1)', // Blue line color
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: true,
+                    tension: 0.4
                 }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
 
-        // Create Kitsilano Chart
-        const ctxKitsilano = document.getElementById('kitsilanoChart').getContext('2d');
-        new Chart(ctxKitsilano, {
-            type: 'line',
+        // Setup for Arbutus Ridge chart
+        const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
+        const arbutusChart = new Chart(arbutusCtx, {
+            type: 'line', // Line chart
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // Example months
+                labels: labels,
                 datasets: [{
-                    label: 'Kitsilano Data',
-                    data: kitsilanoData,
-                    borderColor: 'rgb(153, 102, 255)',
-                    fill: false
+                    label: 'Arbutus Ridge Data', // Initial label
+                    data: data.arbutus_ridge, // Default data
+                    borderColor: 'rgba(255, 99, 132, 1)', // Red line color
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: true,
+                    tension: 0.4
                 }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
+        });
+
+        // Event listener for Downtown dropdown
+        document.getElementById('downtown-selector').addEventListener('change', function() {
+            const selectedArea = this.value;
+            if (selectedArea === 'downtown') {
+                downtownChart.data.datasets[0].data = data.downtown; // Update Downtown data
+                downtownChart.data.datasets[0].borderColor = 'rgba(54, 162, 235, 1)';
+                downtownChart.data.datasets[0].backgroundColor = 'rgba(54, 162, 235, 0.2)';
+            } else if (selectedArea === 'arbutus_ridge') {
+                downtownChart.data.datasets[0].data = data.arbutus_ridge; // Update to Arbutus Ridge data
+                downtownChart.data.datasets[0].borderColor = 'rgba(255, 99, 132, 1)';
+                downtownChart.data.datasets[0].backgroundColor = 'rgba(255, 99, 132, 0.2)';
+            }
+            downtownChart.update(); // Redraw the chart
+        });
+
+        // Event listener for Arbutus Ridge dropdown
+        document.getElementById('arbutus-selector').addEventListener('change', function() {
+            const selectedArea = this.value;
+            if (selectedArea === 'downtown') {
+                arbutusChart.data.datasets[0].data = data.downtown; // Update Downtown data
+                arbutusChart.data.datasets[0].borderColor = 'rgba(54, 162, 235, 1)';
+                arbutusChart.data.datasets[0].backgroundColor = 'rgba(54, 162, 235, 0.2)';
+                arbutusChart.data.datasets[0].label = 'Downtown Data'; // Update legend label
+            } else if (selectedArea === 'arbutus_ridge') {
+                arbutusChart.data.datasets[0].data = data.arbutus_ridge; // Update Arbutus Ridge data
+                arbutusChart.data.datasets[0].borderColor = 'rgba(255, 99, 132, 1)';
+                arbutusChart.data.datasets[0].backgroundColor = 'rgba(255, 99, 132, 0.2)';
+                arbutusChart.data.datasets[0].label = 'Arbutus Ridge Data'; // Update legend label
+            }
+            arbutusChart.update(); // Redraw the chart
         });
     </script>
 </body>
 </html>
+
