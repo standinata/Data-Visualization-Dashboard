@@ -61,7 +61,7 @@ window.onload = function() {
     // Check if data loaded correctly
     console.log(data); // Debug: View the data in the console
 
-    if (!data || !data.labels || !data.downtown || !data.arbutus_ridge) {
+    if (!data || !data.labels || !data.downtown || !data.arbutus_ridge || !data.riley_park || !data.vancouver) {
         console.error("Data is missing or not loaded properly:", data);
         return;
     }
@@ -88,20 +88,20 @@ window.onload = function() {
                 labels: labels,
                 datasets: [
                     {
+                        label: "Vancouver",  // Dataset for Vancouver
+                        data: data.vancouver,  // Data sourced from JSON
+                        borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
+                        backgroundColor: 'rgba(0, 200, 0, 0)',
+                        fill: true,  // This makes the area under the line filled
+                        tension: 0.4  // Smoothing of the line
+                    },
+                    {
                         label: 'Downtown',
                         data: data.downtown,
                         borderColor: 'rgba(54, 162, 235, 1)',
                         backgroundColor: 'rgba(255, 255, 255, 0)',
                         fill: true,
                         tension: 0.4
-                    },
-                    {
-                        label: "Vancouver",  // Dataset for Vancouver
-                        data: data.Vancouver,  // Data sourced from JSON
-                        borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
-                        backgroundColor: 'rgba(0, 200, 0, 0)',
-                        fill: true,  // This makes the area under the line filled
-                        tension: 0.4  // Smoothing of the line
                     }
                 ]
             },
@@ -117,20 +117,20 @@ const arbutusChart = new Chart(arbutusCtx, {
         labels: labels,
         datasets: [
             {
+                label: "Vancouver",  // Adding Vancouver dataset
+                data: data.vancouver,  // Data sourced from JSON for Vancouver
+                borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
+                backgroundColor: 'rgba(0, 200, 0, 0)',
+                fill: true,  // This makes the area under the line filled
+                tension: 0.4  // Smoothing of the line
+            },
+            {
                 label: 'Arbutus Ridge',
                 data: data.arbutus_ridge,
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0)',
                 fill: true,
                 tension: 0.4
-            },
-            {
-                label: "Vancouver",  // Adding Vancouver dataset
-                data: data.Vancouver,  // Data sourced from JSON for Vancouver
-                borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
-                backgroundColor: 'rgba(0, 200, 0, 0)',
-                fill: true,  // This makes the area under the line filled
-                tension: 0.4  // Smoothing of the line
             }
         ]
     },
