@@ -56,6 +56,9 @@ window.onload = function() {
     // Pass PHP data to JavaScript
     const data = <?php echo json_encode($array); ?>;
 
+    // Check if data loaded correctly
+    console.log(data); // Debug: View the data in the console
+
     if (!data || !data.labels || !data.downtown || !data.arbutus_ridge) {
         console.error("Data is missing or not loaded properly:", data);
         return;
@@ -77,39 +80,61 @@ window.onload = function() {
 
     // Downtown chart
     const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
-    const downtownChart = new Chart(downtownCtx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Downtown',
-                data: data.downtown,
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(255, 255, 255, 0)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
+        const downtownChart = new Chart(downtownCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Downtown',
+                        data: data.downtown,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(255, 255, 255, 0)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: "Vancouver",  // Dataset for Vancouver
+                        data: data.Vancouver,  // Data sourced from JSON
+                        borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
+                        backgroundColor: 'rgba(0, 200, 0, 0)',
+                        fill: true,  // This makes the area under the line filled
+                        tension: 0.4  // Smoothing of the line
+                    }
+                ]
+            },
         options: commonOptions
     });
 
-    // Arbutus Ridge chart
-    const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
-    const arbutusChart = new Chart(arbutusCtx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
+
+// Arbutus Ridge chart
+const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
+const arbutusChart = new Chart(arbutusCtx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
                 label: 'Arbutus Ridge',
                 data: data.arbutus_ridge,
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0)',
                 fill: true,
                 tension: 0.4
-            }]
-        },
-        options: commonOptions
-    });
+            },
+            {
+                label: "Vancouver",  // Adding Vancouver dataset
+                data: data.Vancouver,  // Data sourced from JSON for Vancouver
+                borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
+                backgroundColor: 'rgba(0, 200, 0, 0)',
+                fill: true,  // This makes the area under the line filled
+                tension: 0.4  // Smoothing of the line
+            }
+        ]
+    },
+    options: commonOptions
+});
+
 
     // Function to capitalize the first letter of a string
     function capitalizeFirstLetter(string) {

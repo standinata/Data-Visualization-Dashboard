@@ -71,14 +71,13 @@ $data = [
                             tension: 0.4
                         },
                         {
-                            label: "Vancouver Data",
-                            data: jsonData.vancouver,
+                            label: "Vancouver",
+                            data: jsonData.Vancouver,
                             borderColor: 'rgba(0, 200, 0, 1)',
                             backgroundColor: 'rgba(0, 200, 0, 0.2)',
                             fill: true,
                             tension: 0.4
-                        }
-                    ]
+                        }]
                 },
                 options: {
                     scales: {
