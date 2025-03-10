@@ -174,6 +174,12 @@ const arbutusChart = new Chart(arbutusCtx, {
     <h3>Area that needs improvement</h3>
 </div>
 
+<div class="conclusion-wrap">
+    <div class="conclusion">
+    <p>AAAAAAAA</p>
+    </div>
+</div>
+
 <!-- Debugging Information -->
 <div>
     <pre>
