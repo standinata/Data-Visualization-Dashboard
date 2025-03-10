@@ -52,84 +52,94 @@ if ($array === null) {
 
 <!-- JavaScript for Charts -->
 <script>
-    window.onload = function() {
-        // Pass PHP data to JavaScript
-        const data = <?php echo json_encode($array); ?>;
+window.onload = function() {
+    // Pass PHP data to JavaScript
+    const data = <?php echo json_encode($array); ?>;
 
-        if (!data || !data.labels || !data.downtown || !data.arbutus_ridge) {
-            console.error("Data is missing or not loaded properly:", data);
-            return;
-        }
+    if (!data || !data.labels || !data.downtown || !data.arbutus_ridge) {
+        console.error("Data is missing or not loaded properly:", data);
+        return;
+    }
 
-        const labels = data.labels;
+    const labels = data.labels;
 
-        // Common chart options
-        const commonOptions = {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+    // Common chart options with fixed Y-axis range and step size
+    const commonOptions = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                min: 0,  // Set the minimum value to 0
+                max: 50, // Set the maximum value to 50
+                stepSize: 5, // Set the step size for intervals
             }
-        };
-
-        // Downtown chart
-        const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
-        const downtownChart = new Chart(downtownCtx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Downtown Data',
-                    data: data.downtown,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: commonOptions
-        });
-
-        // Arbutus Ridge chart
-        const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
-        const arbutusChart = new Chart(arbutusCtx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Arbutus Ridge Data',
-                    data: data.arbutus_ridge,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: commonOptions
-        });
-
-        // Function to update chart data
-        function updateChart(chart, selectedArea) {
-            // Update the chart data and label based on the selected area
-            chart.data.datasets[0].data = data[selectedArea];
-            chart.data.datasets[0].label = selectedArea.replace('_', ' ') + " Data"; // Update label dynamically
-            chart.update(); // Re-render the chart with new data
         }
-
-        // Attach event listeners to both dropdowns
-        document.querySelectorAll('.area-selector').forEach(select => {
-            select.addEventListener('change', function() {
-                const selectedArea = this.value; // Get selected area from dropdown
-                const chartType = this.getAttribute('data-chart'); // Get the chart type (downtown or arbutus)
-
-                if (chartType === "downtown") {
-                    updateChart(downtownChart, selectedArea); // Update the Downtown chart
-                } else if (chartType === "arbutus") {
-                    updateChart(arbutusChart, selectedArea); // Update the Arbutus Ridge chart
-                }
-            });
-        });
     };
+
+    // Downtown chart
+    const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
+    const downtownChart = new Chart(downtownCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Downtown Data',
+                data: data.downtown,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(255, 255, 255, 0)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: commonOptions
+    });
+
+    // Arbutus Ridge chart
+    const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
+    const arbutusChart = new Chart(arbutusCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Arbutus Ridge Data',
+                data: data.arbutus_ridge,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: commonOptions
+    });
+
+    // Function to capitalize the first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).replace('_', ' ');
+    }
+
+    // Function to update chart data
+    function updateChart(chart, selectedArea) {
+        // Update the chart data and label based on the selected area
+        chart.data.datasets[0].data = data[selectedArea];
+        chart.data.datasets[0].label = capitalizeFirstLetter(selectedArea) + " Data"; // Capitalize the first letter and update label
+        chart.update(); // Re-render the chart with new data
+    }
+
+    // Attach event listeners to both dropdowns
+    document.querySelectorAll('.area-selector').forEach(select => {
+        select.addEventListener('change', function() {
+            const selectedArea = this.value; // Get selected area from dropdown
+            const chartType = this.getAttribute('data-chart'); // Get the chart type (downtown or arbutus)
+
+            if (chartType === "downtown") {
+                updateChart(downtownChart, selectedArea); // Update the Downtown chart
+            } else if (chartType === "arbutus") {
+                updateChart(arbutusChart, selectedArea); // Update the Arbutus Ridge chart
+            }
+        });
+    });
+};
+
+
 </script>
 
 <!-- Conclusion -->
