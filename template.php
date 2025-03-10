@@ -1,5 +1,4 @@
 <?php
-
 // Read the JSON file
 $json = file_get_contents('data.json');
 if ($json === false) {
@@ -11,7 +10,6 @@ $array = json_decode($json, true);
 if ($array === null) {
     die("Error decoding JSON: " . json_last_error_msg());
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -19,10 +17,8 @@ if ($array === null) {
 <head>
     <title>PHP Template - Project 02, INTD 210, 2025</title>
 	<link rel="stylesheet" type="text/css" href="/style.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 </head>
-
 <body style="font-family:sans-serif">
 
 <!-- Title div -->
@@ -37,22 +33,21 @@ if ($array === null) {
 
 <!-- Canvas elements for charts -->
 <div class="chart-wrap">
-
-<div class="chart-container">
-<select class="area-selector" data-chart="downtown">
+    <div class="chart-container">
+        <select class="area-selector" data-chart="downtown">
             <option value="downtown" selected>Downtown</option>
             <option value="arbutus_ridge">Arbutus Ridge</option>
         </select>
-    <canvas id="downtown-chart"></canvas>
-</div>
+        <canvas id="downtown-chart"></canvas>
+    </div>
 
-<div class="chart-container">
-<select class="area-selector" data-chart="arbutus">
+    <div class="chart-container">
+        <select class="area-selector" data-chart="arbutus">
             <option value="downtown">Downtown</option>
             <option value="arbutus_ridge" selected>Arbutus Ridge</option>
         </select>
-    <canvas id="arbutus-chart"></canvas>
-</div>
+        <canvas id="arbutus-chart"></canvas>
+    </div>
 </div>
 
 <!-- JavaScript for Charts -->
@@ -67,6 +62,15 @@ if ($array === null) {
         }
 
         const labels = data.labels;
+
+        // Common chart options
+        const commonOptions = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
 
         // Downtown chart
         const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
@@ -83,7 +87,7 @@ if ($array === null) {
                     tension: 0.4
                 }]
             },
-            options: { scales: { y: { beginAtZero: true } } }
+            options: commonOptions
         });
 
         // Arbutus Ridge chart
@@ -101,39 +105,31 @@ if ($array === null) {
                     tension: 0.4
                 }]
             },
-            options: { scales: { y: { beginAtZero: true } } }
+            options: commonOptions
         });
-    };
 
-		// Initialize charts
-		const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
-        const downtownChart = createChart(downtownCtx, "downtown");
-
-        const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
-        const arbutusChart = createChart(arbutusCtx, "arbutus_ridge");
-
-        // Function to update charts
+        // Function to update chart data
         function updateChart(chart, selectedArea) {
-            chart.data.datasets[0].data = jsonData[selectedArea];
-            chart.data.datasets[0].label = selectedArea.replace('_', ' ') + " Data";
-            chart.update();
+            // Update the chart data and label based on the selected area
+            chart.data.datasets[0].data = data[selectedArea];
+            chart.data.datasets[0].label = selectedArea.replace('_', ' ') + " Data"; // Update label dynamically
+            chart.update(); // Re-render the chart with new data
         }
 
-
-	
-	        // Attach event listeners to both dropdowns
-			document.querySelectorAll('.area-selector').forEach(select => {
+        // Attach event listeners to both dropdowns
+        document.querySelectorAll('.area-selector').forEach(select => {
             select.addEventListener('change', function() {
-                const selectedArea = this.value;
-                const chartType = this.getAttribute('data-chart');
+                const selectedArea = this.value; // Get selected area from dropdown
+                const chartType = this.getAttribute('data-chart'); // Get the chart type (downtown or arbutus)
 
                 if (chartType === "downtown") {
-                    updateChart(downtownChart, selectedArea);
+                    updateChart(downtownChart, selectedArea); // Update the Downtown chart
                 } else if (chartType === "arbutus") {
-                    updateChart(arbutusChart, selectedArea);
+                    updateChart(arbutusChart, selectedArea); // Update the Arbutus Ridge chart
                 }
             });
         });
+    };
 </script>
 
 <!-- Conclusion -->
