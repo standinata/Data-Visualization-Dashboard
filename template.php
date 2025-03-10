@@ -37,6 +37,7 @@ if ($array === null) {
         <select class="area-selector" data-chart="downtown">
             <option value="downtown" selected>Downtown</option>
             <option value="arbutus_ridge">Arbutus Ridge</option>
+            <option value="riley_park">Riley Park</option>
         </select>
         <canvas id="downtown-chart"></canvas>
     </div>
@@ -45,6 +46,7 @@ if ($array === null) {
         <select class="area-selector" data-chart="arbutus">
             <option value="downtown">Downtown</option>
             <option value="arbutus_ridge" selected>Arbutus Ridge</option>
+            <option value="riley_park">Riley Park</option>
         </select>
         <canvas id="arbutus-chart"></canvas>
     </div>
@@ -144,8 +146,8 @@ const arbutusChart = new Chart(arbutusCtx, {
     // Function to update chart data
     function updateChart(chart, selectedArea) {
         // Update the chart data and label based on the selected area
-        chart.data.datasets[0].data = data[selectedArea];
-        chart.data.datasets[0].label = capitalizeFirstLetter(selectedArea); // Capitalize the first letter and update label
+        chart.data.datasets[1].data = data[selectedArea];
+        chart.data.datasets[1].label = capitalizeFirstLetter(selectedArea); // Capitalize the first letter and update label
         chart.update(); // Re-render the chart with new data
     }
 

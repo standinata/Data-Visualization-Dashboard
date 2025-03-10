@@ -1,122 +1,188 @@
 <?php
-// JSON data for Downtown, Arbutus Ridge, and Vancouver
-$data = [
-    'downtown' => [46, 48, 46, 44], 
-    'arbutus_ridge' => [34, 36, 43, 45, 39.5], 
-    'vancouver' => [36, 37, 38, 37] // Vancouver is always shown
-];
+// Read the JSON file
+$json = file_get_contents('data.json');
+if ($json === false) {
+    die("Error reading JSON file.");
+}
+
+// Decode the JSON file
+$array = json_decode($json, true);
+if ($array === null) {
+    die("Error decoding JSON: " . json_last_error_msg());
+}
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Graph Layout</title>
+    <title>PHP Template - Project 02, INTD 210, 2025</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-around;
-            margin-top: 30px;
-        }
-        .chart-container {
-            width: 45%;
-            height: 400px;
-        }
-        select {
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
-<body>
-    <!-- Downtown Chart Container -->
+<body style="font-family:sans-serif">
+
+<!-- Title div -->
+<div class="title">
+    <h1>Which area spends more of their income on housing rent?</h1>
+</div>
+
+<!-- Compare 2 areas -->
+<div class="description">
+    <h3>Compare 2 areas all around Vancouver over the course of 15 years</h3>
+</div>
+
+<!-- Canvas elements for charts -->
+<div class="chart-wrap">
     <div class="chart-container">
-        <h3>Downtown Data</h3>
         <select class="area-selector" data-chart="downtown">
-            <option value="downtown">Downtown</option>
+            <option value="downtown" selected>Downtown</option>
             <option value="arbutus_ridge">Arbutus Ridge</option>
+            <option value="riley_park">Riley Park</option>
         </select>
         <canvas id="downtown-chart"></canvas>
     </div>
 
-    <!-- Arbutus Ridge Chart Container -->
     <div class="chart-container">
-        <h3>Arbutus Ridge Data</h3>
         <select class="area-selector" data-chart="arbutus">
             <option value="downtown">Downtown</option>
-            <option value="arbutus_ridge">Arbutus Ridge</option>
+            <option value="arbutus_ridge" selected>Arbutus Ridge</option>
+            <option value="riley_park">Riley Park</option>
         </select>
         <canvas id="arbutus-chart"></canvas>
     </div>
+</div>
 
-    <script>
-        // Pass PHP data to JavaScript
-        const jsonData = <?php echo json_encode($data); ?>;
-        const labels = ['2001', '2002', '2003', '2004']; 
+<!-- JavaScript for Charts -->
+<script>
+window.onload = function() {
+    // Pass PHP data to JavaScript
+    const data = <?php echo json_encode($array); ?>;
 
-        // Function to create a chart
-        function createChart(ctx, defaultArea) {
-            return new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: defaultArea.replace('_', ' ') + " Data",
-                            data: jsonData[defaultArea],
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: "Vancouver",
-                            data: jsonData.Vancouver,
-                            borderColor: 'rgba(0, 200, 0, 1)',
-                            backgroundColor: 'rgba(0, 200, 0, 0.2)',
-                            fill: true,
-                            tension: 0.4
-                        }]
+    // Check if data loaded correctly
+    console.log(data); // Debug: View the data in the console
+
+    if (!data || !data.labels || !data.downtown || !data.arbutus_ridge || !data.riley_park || !data.vancouver) {
+        console.error("Data is missing or not loaded properly:", data);
+        return;
+    }
+
+    const labels = data.labels;
+
+    // Common chart options with fixed Y-axis range and step size
+    const commonOptions = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                min: 0,  // Set the minimum value to 0
+                max: 50, // Set the maximum value to 50
+                stepSize: 5, // Set the step size for intervals
+            }
+        }
+    };
+
+    // Downtown chart
+    const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
+    const downtownChart = new Chart(downtownCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Vancouver',  // Always show Vancouver on both charts
+                    data: data.vancouver,  // Data sourced from JSON
+                    borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
+                    backgroundColor: 'rgba(0, 200, 0, 0)',
+                    fill: true,  // This makes the area under the line filled
+                    tension: 0.4  // Smoothing of the line
                 },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+                {
+                    label: 'Downtown',  // Initially show Downtown
+                    data: data.downtown,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    fill: true,
+                    tension: 0.4
                 }
-            });
-        }
+            ]
+        },
+        options: commonOptions
+    });
 
-        // Initialize charts
-        const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
-        const downtownChart = createChart(downtownCtx, "downtown");
-
-        const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
-        const arbutusChart = createChart(arbutusCtx, "arbutus_ridge");
-
-        // Function to update charts
-        function updateChart(chart, selectedArea) {
-            chart.data.datasets[0].data = jsonData[selectedArea];
-            chart.data.datasets[0].label = selectedArea.replace('_', ' ') + " Data";
-            chart.update();
-        }
-
-        // Attach event listeners to both dropdowns
-        document.querySelectorAll('.area-selector').forEach(select => {
-            select.addEventListener('change', function() {
-                const selectedArea = this.value;
-                const chartType = this.getAttribute('data-chart');
-
-                if (chartType === "downtown") {
-                    updateChart(downtownChart, selectedArea);
-                } else if (chartType === "arbutus") {
-                    updateChart(arbutusChart, selectedArea);
+    // Arbutus Ridge chart
+    const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
+    const arbutusChart = new Chart(arbutusCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Vancouver',  // Always show Vancouver on both charts
+                    data: data.vancouver,  // Data for Vancouver
+                    borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
+                    backgroundColor: 'rgba(0, 200, 0, 0)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Arbutus Ridge',  // Initially show Arbutus Ridge
+                    data: data.arbutus_ridge,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0)',
+                    fill: true,
+                    tension: 0.4
                 }
-            });
+            ]
+        },
+        options: commonOptions
+    });
+
+    // Function to capitalize the first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).replace('_', ' ');
+    }
+
+    // Function to update chart data
+    function updateChart(chart, selectedArea) {
+        // Update the chart data and label based on the selected area
+        chart.data.datasets[1].data = data[selectedArea];  // Update the second area (not Vancouver)
+        chart.data.datasets[1].label = capitalizeFirstLetter(selectedArea); // Capitalize the first letter and update label
+        chart.update(); // Re-render the chart with new data
+    }
+
+    // Attach event listeners to both dropdowns
+    document.querySelectorAll('.area-selector').forEach(select => {
+        select.addEventListener('change', function() {
+            const selectedArea = this.value; // Get selected area from dropdown
+            const chartType = this.getAttribute('data-chart'); // Get the chart type (downtown or arbutus)
+
+            if (chartType === "downtown") {
+                updateChart(downtownChart, selectedArea); // Update the Downtown chart
+            } else if (chartType === "arbutus") {
+                updateChart(arbutusChart, selectedArea); // Update the Arbutus Ridge chart
+            }
         });
-    </script>
+    });
+};
+</script>
+
+
+<!-- Conclusion -->
+<div>
+    <h3>Area that needs improvement</h3>
+</div>
+
+<!-- Debugging Information -->
+<div>
+    <pre>
+    <?php 
+    // Uncomment these for debugging if needed
+    // var_dump($_GET);	
+    // var_dump($json);  
+    // var_dump($array);
+    ?>
+    </pre>
+</div>
+
 </body>
 </html>
 
