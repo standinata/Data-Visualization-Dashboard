@@ -39,10 +39,18 @@ if ($array === null) {
 <div class="chart-wrap">
 
 <div class="chart-container">
+<select class="area-selector" data-chart="downtown">
+            <option value="downtown" selected>Downtown</option>
+            <option value="arbutus_ridge">Arbutus Ridge</option>
+        </select>
     <canvas id="downtown-chart"></canvas>
 </div>
 
 <div class="chart-container">
+<select class="area-selector" data-chart="arbutus">
+            <option value="downtown">Downtown</option>
+            <option value="arbutus_ridge" selected>Arbutus Ridge</option>
+        </select>
     <canvas id="arbutus-chart"></canvas>
 </div>
 </div>
@@ -96,6 +104,36 @@ if ($array === null) {
             options: { scales: { y: { beginAtZero: true } } }
         });
     };
+
+		// Initialize charts
+		const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
+        const downtownChart = createChart(downtownCtx, "downtown");
+
+        const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
+        const arbutusChart = createChart(arbutusCtx, "arbutus_ridge");
+
+        // Function to update charts
+        function updateChart(chart, selectedArea) {
+            chart.data.datasets[0].data = jsonData[selectedArea];
+            chart.data.datasets[0].label = selectedArea.replace('_', ' ') + " Data";
+            chart.update();
+        }
+
+
+	
+	        // Attach event listeners to both dropdowns
+			document.querySelectorAll('.area-selector').forEach(select => {
+            select.addEventListener('change', function() {
+                const selectedArea = this.value;
+                const chartType = this.getAttribute('data-chart');
+
+                if (chartType === "downtown") {
+                    updateChart(downtownChart, selectedArea);
+                } else if (chartType === "arbutus") {
+                    updateChart(arbutusChart, selectedArea);
+                }
+            });
+        });
 </script>
 
 <!-- Conclusion -->

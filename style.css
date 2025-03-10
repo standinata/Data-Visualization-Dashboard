@@ -2,17 +2,18 @@ h1 {
     font-family: 'Inter';
     font-size: 36px;
     font-weight: normal;
+    padding-left: 30px;
 }
 
 h3 {
     font-family: 'Inter';
     font-size: 20px;
     font-weight: 700;
+    padding-left: 30px;
 }
 
 body {
     font-family: Arial, sans-serif;
-
     margin-top: 30px;
 }
 
