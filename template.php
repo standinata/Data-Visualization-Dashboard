@@ -82,7 +82,7 @@ window.onload = function() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Downtown Data',
+                label: 'Downtown',
                 data: data.downtown,
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -100,7 +100,7 @@ window.onload = function() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Arbutus Ridge Data',
+                label: 'Arbutus Ridge',
                 data: data.arbutus_ridge,
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0)',
