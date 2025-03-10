@@ -120,7 +120,7 @@ window.onload = function() {
     function updateChart(chart, selectedArea) {
         // Update the chart data and label based on the selected area
         chart.data.datasets[0].data = data[selectedArea];
-        chart.data.datasets[0].label = capitalizeFirstLetter(selectedArea) + " Data"; // Capitalize the first letter and update label
+        chart.data.datasets[0].label = capitalizeFirstLetter(selectedArea); // Capitalize the first letter and update label
         chart.update(); // Re-render the chart with new data
     }
 
