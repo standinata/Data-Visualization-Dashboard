@@ -13,13 +13,16 @@ if ($array === null) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP Template - Project 02, INTD 210, 2025</title>
-	<link rel="stylesheet" type="text/css" href="/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body style="font-family:sans-serif">
+<body>
 
 <!-- Title div -->
 <div class="title">
@@ -40,6 +43,7 @@ if ($array === null) {
             <option value="riley_park">Riley Park</option>
         </select>
         <canvas id="downtown-chart"></canvas>
+        <span id="downtown-trend" class="trend-pill"></span>
     </div>
 
     <div class="chart-container">
@@ -49,148 +53,123 @@ if ($array === null) {
             <option value="riley_park">Riley Park</option>
         </select>
         <canvas id="arbutus-chart"></canvas>
+        <span id="arbutus-trend" class="trend-pill"></span>
+    </div>
+</div>
+
+<!-- Conclusion -->
+<div>
+    <h3>Area that needs improvement</h3>
+</div>
+<div class="conclusion-wrap">
+    <div class="conclusion">
+        <p id="conclusion-text">Loading...</p>
     </div>
 </div>
 
 <!-- JavaScript for Charts -->
 <script>
 window.onload = function() {
-    // Pass PHP data to JavaScript
     const data = <?php echo json_encode($array); ?>;
-
-    // Check if data loaded correctly
-    console.log(data); // Debug: View the data in the console
-
-    if (!data || !data.labels || !data.downtown || !data.arbutus_ridge || !data.riley_park || !data.vancouver) {
-        console.error("Data is missing or not loaded properly:", data);
-        return;
-    }
-
     const labels = data.labels;
 
-    // Common chart options with fixed Y-axis range and step size
-    const commonOptions = {
-        scales: {
-            y: {
-                beginAtZero: true,
-                min: 0,  // Set the minimum value to 0
-                max: 50, // Set the maximum value to 50
-                stepSize: 5, // Set the step size for intervals
-            }
-        }
+    // Manually set the trend changes for the areas based on the given percentages
+    const trendChanges = {
+        downtown: -2,   // Downtown: decrease of 2%
+        riley_park: -3, // Riley Park: decrease of 3%
+        arbutus_ridge: 11 // Arbutus: increase of 11%
     };
 
-    // Downtown chart
-    const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
-        const downtownChart = new Chart(downtownCtx, {
+    // Function to calculate the trend change dynamically
+    function calculateTrend(area) {
+        return trendChanges[area] || 0;  // Default to 0% if not defined
+    }
+
+    // Function to update the trend pill with the correct percentage change
+    function updateTrendPill(area, pillId) {
+        const trendValue = calculateTrend(area);
+        const trendPill = document.getElementById(pillId);
+        trendPill.textContent = trendValue > 0 ? `+${trendValue}% increase` : `${trendValue}% decrease`;
+        trendPill.className = "trend-pill " + (trendValue > 0 ? "green" : "red");
+    }
+
+    // Function to update the conclusion based on the trend of two areas
+    function updateConclusion(area1, area2) {
+        const trend1 = calculateTrend(area1);
+        const trend2 = calculateTrend(area2);
+        let conclusionText = "";
+        if (trend1 > trend2) {
+            conclusionText = `${area1.replace('_', ' ')} needs more improvement.`;
+        } else if (trend2 > trend1) {
+            conclusionText = `${area2.replace('_', ' ')} needs more improvement.`;
+        } else {
+            conclusionText = "Both areas show similar trends.";
+        }
+        document.getElementById("conclusion-text").textContent = conclusionText;
+    }
+
+    // Function to create the chart for an area
+    function createChart(ctx, area, trendPillId) {
+        updateTrendPill(area, trendPillId);
+        return new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
-                    {
-                        label: "Vancouver",  // Dataset for Vancouver
-                        data: data.vancouver,  // Data sourced from JSON
-                        borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
-                        backgroundColor: 'rgba(0, 200, 0, 0)',
-                        fill: true,  // This makes the area under the line filled
-                        tension: 0.4  // Smoothing of the line
-                    },
-                    {
-                        label: 'Downtown',
-                        data: data.downtown,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(255, 255, 255, 0)',
-                        fill: true,
-                        tension: 0.4
-                    }
+                    { label: "Vancouver", data: data.vancouver, borderColor: 'rgba(0, 200, 0, 1)', backgroundColor: 'rgba(0, 200, 0, 0)', fill: true, tension: 0.4 },
+                    { label: area.replace('_', ' '), data: data[area], borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(255, 255, 255, 0)', fill: true, tension: 0.4 }
                 ]
             },
-        options: commonOptions
-    });
-
-
-// Arbutus Ridge chart
-const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
-const arbutusChart = new Chart(arbutusCtx, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: [
-            {
-                label: "Vancouver",  // Adding Vancouver dataset
-                data: data.vancouver,  // Data sourced from JSON for Vancouver
-                borderColor: 'rgba(0, 200, 0, 1)',  // Line color for Vancouver
-                backgroundColor: 'rgba(0, 200, 0, 0)',
-                fill: true,  // This makes the area under the line filled
-                tension: 0.4  // Smoothing of the line
-            },
-            {
-                label: 'Arbutus Ridge',
-                data: data.arbutus_ridge,
-                borderColor: 'rgba(255, 99, 132, 1)',
-                backgroundColor: 'rgba(255, 99, 132, 0)',
-                fill: true,
-                tension: 0.4
-            }
-        ]
-    },
-    options: commonOptions
-});
-
-
-    // Function to capitalize the first letter of a string
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1).replace('_', ' ');
+            options: { scales: { y: { beginAtZero: true, min: 0, max: 50, stepSize: 5 } } }
+        });
     }
 
-    // Function to update chart data
-    function updateChart(chart, selectedArea) {
-        // Update the chart data and label based on the selected area
-        chart.data.datasets[1].data = data[selectedArea];
-        chart.data.datasets[1].label = capitalizeFirstLetter(selectedArea); // Capitalize the first letter and update label
-        chart.update(); // Re-render the chart with new data
+    const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
+    let downtownChart = createChart(downtownCtx, "downtown", "downtown-trend");
+
+    const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
+    let arbutusChart = createChart(arbutusCtx, "arbutus_ridge", "arbutus-trend");
+
+    updateConclusion("downtown", "arbutus_ridge");
+
+    // Function to update a chart when an area is selected
+    function updateChart(chart, area, trendPillId) {
+        chart.data.datasets[1].data = data[area];
+        chart.data.datasets[1].label = area.replace('_', ' ');
+        chart.update();
+        updateTrendPill(area, trendPillId);
     }
 
-    // Attach event listeners to both dropdowns
+    // Event listener for the area selectors
     document.querySelectorAll('.area-selector').forEach(select => {
         select.addEventListener('change', function() {
-            const selectedArea = this.value; // Get selected area from dropdown
-            const chartType = this.getAttribute('data-chart'); // Get the chart type (downtown or arbutus)
-
+            const selectedArea = this.value;
+            const chartType = this.getAttribute('data-chart');
             if (chartType === "downtown") {
-                updateChart(downtownChart, selectedArea); // Update the Downtown chart
+                updateChart(downtownChart, selectedArea, "downtown-trend");
             } else if (chartType === "arbutus") {
-                updateChart(arbutusChart, selectedArea); // Update the Arbutus Ridge chart
+                updateChart(arbutusChart, selectedArea, "arbutus-trend");
             }
+            const otherChart = chartType === "downtown" ? document.querySelector("[data-chart='arbutus']").value : document.querySelector("[data-chart='downtown']").value;
+            updateConclusion(selectedArea, otherChart);
         });
     });
 };
-
-
 </script>
 
-<!-- Conclusion -->
-<div>
-    <h3>Area that needs improvement</h3>
-</div>
-
-<div class="conclusion-wrap">
-    <div class="conclusion">
-    <p>AAAAAAAA</p>
-    </div>
-</div>
 
 <!-- Debugging Information -->
 <div>
     <pre>
     <?php 
     // Uncomment these for debugging if needed
-    // var_dump($_GET);	
+    // var_dump($_GET); 
     // var_dump($json);  
     // var_dump($array);
     ?>
     </pre>
 </div>
+
 
 </body>
 </html>

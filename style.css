@@ -45,21 +45,29 @@ body {
 select {
     margin-bottom: 20px;
 }
-
-.conclusion {
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 25px;
-    border-color: #ABABAB;
-    width: 100%;
-    height: 300px;
-    padding: 15px;
+/* Trend pill styling */
+.trend-pill {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
+.green { background-color: green; }
+.red { background-color: red; }
+
+/* Conclusion styling */
 .conclusion-wrap {
-    display: flex;
-    justify-content: space-around;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    border: 2px solid #ccc;  /* Light gray border around the conclusion box */
+    border-radius: 10px;      /* Rounded corners */
+    padding: 20px;            /* Space around the conclusion */
+    width: 100%;              /* Full width */
+    max-width: 600px;         /* Max width */
+    margin: 20px auto;        /* Center the conclusion container */
+    text-align: center;       /* Center the text */
 }
+
+
+
