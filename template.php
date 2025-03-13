@@ -80,6 +80,12 @@ $id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arb
     <h3>Area that needs improvement</h3>
 </div>
 <div class="conclusion-wrap">
+    
+    <div class="map-img">
+        <img src="map-Arbutus.png">
+    </div>
+
+
     <div class="conclusion">
         <p id="conclusion-text">Loading...</p>
     </div>
