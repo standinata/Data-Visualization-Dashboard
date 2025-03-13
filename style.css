@@ -85,7 +85,7 @@ select {
 .green { background-color: green; }
 .red { background-color: red; }
 
-.conclusion-wrap {
+.conclusion-card {
     border: 2px solid #ccc;  /* Light gray border around the conclusion box */
     border-radius: 10px;
     padding: 20px;
@@ -96,3 +96,13 @@ select {
     background-color: white;
 }
 
+.conclusion {
+    width:500px;
+}
+
+.map-img {
+    width: 100%; /* Ensure the image scales proportionally */
+    max-width: 600px; /* Set the maximum width to 500px */
+    height: auto;
+    display:flex;
+}
