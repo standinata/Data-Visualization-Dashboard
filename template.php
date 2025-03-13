@@ -96,12 +96,22 @@ $id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arb
     
     <img src="map-Arbutus.png"class="map-img">
 
+<div class="conclusion-align">
 
+    <h4> Area name</h4>
     <div class="conclusion">
         <p id="conclusion-text">Loading...</p>
     </div>
+
+    <div class="line"></div>
+
+    <h4>Average % of household in that area that 
+    spent over 1/3 of their income on housing</h4>
+
+    <h2>46%</h2>
+
 </div>
-</div>
+
 
 
 <!-- JavaScript for Charts -->

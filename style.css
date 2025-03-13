@@ -29,12 +29,43 @@ h1 {
     padding-left: 5px;
 }
 
+h2 {
+    font-family: 'Arial';
+    font-size: 40px;
+    color: #1063FF;
+}
+
+#conclusion-text {
+    font-family: 'Arial';
+    font-size: 40px;
+    font-weight: 600;
+    color: #1063FF;
+}
+
+
 h3 {
     font-family: 'Arial';
     font-size: 16px;
     font-weight: 600;
     padding-bottom: 20px;
     padding-left: 5px;
+}
+
+h4 {
+    font-family: 'Arial';
+    font-size: 16px;
+    font-weight: 400;
+    color: #ABABAB;
+    padding-bottom: 30px;
+    max-width: 300px;
+}
+
+.line {
+    height:1px;
+    width: 100%;
+    background-color: #ABABAB;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 body {
@@ -94,10 +125,20 @@ select {
     box-sizing: border-box; /* Add this line to include padding and border in the width */
     text-align: center;
     background-color: white;
+    display:flex;
 }
 
 .conclusion {
     width:500px;
+}
+
+.conclusion-align {
+    text-align: left;
+    width: auto;
+    padding-left: 25px;
+    /* justify-content: space-between;
+    display: flex;
+    flex-direction: column; */
 }
 
 .map-img {
