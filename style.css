@@ -106,3 +106,30 @@ select {
     height: auto;
     display:flex;
 }
+
+
+.logo img {
+    width: 100%; /* Make the image fill the container */
+    max-width: 150px; /* Set a reasonable max width */
+    display: block; /* Remove extra spacing */
+    margin: 10px auto; /* Center the image */
+}
+
+
+.word-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.word-list li {
+    font-size: 16px;
+    margin: 10px 0;
+    color: white
+}
+
+/* Highlight the Dashboard item */
+.highlight {
+    color: #ff6347; /* This color can be changed to any other color */
+    font-weight: bold;
+}

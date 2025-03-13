@@ -30,11 +30,24 @@ $id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arb
 </head>
 <body>
 
+
 <!-- LEFT SIDE -->
 <div class="sticky-nav">
-    <div class="logo"></div>
-    
+    <div class="logo">
+    <img src="CovLogo 1.png" alt="Logo"></div>
+
+<ul class="word-list">
+        <li>Catalogue</li>
+        <li class="highlight">Dashboard</li>
+        <li>Chart Builder</li>
+        <li>Map Builder</li>
+        <li>Help & API</li>
+        <li>Contact</li>
+        <li>Vancouver.ca</li>
+    </ul>
 </div>
+</div>
+
 
 
 
