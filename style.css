@@ -23,15 +23,17 @@ h1 {
     font-family: 'Inter';
     font-size: 32px;
     font-weight: normal;
-    /* padding-left: 30px; */
+    padding-left: 20px;
+    padding-bottom: 10px;
+    padding-top: 20px;
 }
 
 h3 {
     font-family: 'Inter';
     font-size: 16px;
     font-weight: 600;
-    /* padding-left: 30px;
-    padding-bottom: 5px; */
+    padding-left: 20px;
+    padding-bottom: 20px;
 }
 
 body {
@@ -53,6 +55,7 @@ body {
     border-radius: 25px;
     border-color: #ABABAB;
     padding: 15px;
+    background-color: white;
 }
 
 .area-selector {
@@ -89,6 +92,7 @@ select {
     max-width: 600px;         /* Max width */
     margin: 20px auto;        /* Center the conclusion container */
     text-align: center;       /* Center the text */
+    background-color: white;;
     
 }
 
