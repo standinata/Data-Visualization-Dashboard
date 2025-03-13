@@ -10,6 +10,10 @@ $array = json_decode($json, true);
 if ($array === null) {
     die("Error decoding JSON: " . json_last_error_msg());
 }
+
+// Retrieve the id parameters from the URL (default to 'downtown' and 'arbutus_ridge' if not provided)
+$id1 = isset($_GET["id1"]) ? $_GET["id1"] : 'downtown';  // Default to 'downtown' if no id1 is provided
+$id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arbutus_ridge' if no id2 is provided
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +30,7 @@ if ($array === null) {
 
 <!-- Title div -->
 <div class="title">
-    <h1>Which area spends more of their income on housing rent?</h1>
+    <h1>Which area spends more of their income on housing?</h1>
 </div>
 
 <!-- Compare 2 areas -->
@@ -38,9 +42,9 @@ if ($array === null) {
 <div class="chart-wrap">
     <div class="chart-container">
         <select class="area-selector" data-chart="downtown">
-            <option value="downtown" selected>Downtown</option>
-            <option value="arbutus_ridge">Arbutus Ridge</option>
-            <option value="riley_park">Riley Park</option>
+            <option value="downtown" <?php echo $id1 === 'downtown' ? 'selected' : ''; ?>>Downtown</option>
+            <option value="arbutus_ridge" <?php echo $id1 === 'arbutus_ridge' ? 'selected' : ''; ?>>Arbutus Ridge</option>
+            <option value="riley_park" <?php echo $id1 === 'riley_park' ? 'selected' : ''; ?>>Riley Park</option>
         </select>
         <canvas id="downtown-chart"></canvas>
         <span id="downtown-trend" class="trend-pill"></span>
@@ -48,9 +52,9 @@ if ($array === null) {
 
     <div class="chart-container">
         <select class="area-selector" data-chart="arbutus">
-            <option value="downtown">Downtown</option>
-            <option value="arbutus_ridge" selected>Arbutus Ridge</option>
-            <option value="riley_park">Riley Park</option>
+            <option value="downtown" <?php echo $id2 === 'downtown' ? 'selected' : ''; ?>>Downtown</option>
+            <option value="arbutus_ridge" <?php echo $id2 === 'arbutus_ridge' ? 'selected' : ''; ?>>Arbutus Ridge</option>
+            <option value="riley_park" <?php echo $id2 === 'riley_park' ? 'selected' : ''; ?>>Riley Park</option>
         </select>
         <canvas id="arbutus-chart"></canvas>
         <span id="arbutus-trend" class="trend-pill"></span>
@@ -99,11 +103,11 @@ window.onload = function() {
         const trend2 = calculateTrend(area2);
         let conclusionText = "";
         if (trend1 > trend2) {
-            conclusionText = `${area1.replace('_', ' ')} needs more improvement.`;
+            conclusionText = `${area1.replace('_', ' ')}`;
         } else if (trend2 > trend1) {
-            conclusionText = `${area2.replace('_', ' ')} needs more improvement.`;
+            conclusionText = `${area2.replace('_', ' ')}`;
         } else {
-            conclusionText = "Both areas show similar trends.";
+            conclusionText = "Both areas show the same trend";
         }
         document.getElementById("conclusion-text").textContent = conclusionText;
     }
@@ -116,8 +120,22 @@ window.onload = function() {
             data: {
                 labels: labels,
                 datasets: [
-                    { label: "Vancouver", data: data.vancouver, borderColor: 'rgba(0, 200, 0, 1)', backgroundColor: 'rgba(0, 200, 0, 0)', fill: true, tension: 0.4 },
-                    { label: area.replace('_', ' '), data: data[area], borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(255, 255, 255, 0)', fill: true, tension: 0.4 }
+                    {
+                        label: "Vancouver",
+                        data: data.vancouver,
+                        borderColor: 'rgba(0, 200, 0, 1)',
+                        backgroundColor: 'rgba(0, 200, 0, 0)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: area,
+                        data: data[area],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0)',
+                        fill: true,
+                        tension: 0.4
+                    }
                 ]
             },
             options: { scales: { y: { beginAtZero: true, min: 0, max: 50, stepSize: 5 } } }
@@ -125,12 +143,12 @@ window.onload = function() {
     }
 
     const downtownCtx = document.getElementById('downtown-chart').getContext('2d');
-    let downtownChart = createChart(downtownCtx, "downtown", "downtown-trend");
+    let downtownChart = createChart(downtownCtx, "<?php echo $id1; ?>", "downtown-trend");
 
     const arbutusCtx = document.getElementById('arbutus-chart').getContext('2d');
-    let arbutusChart = createChart(arbutusCtx, "arbutus_ridge", "arbutus-trend");
+    let arbutusChart = createChart(arbutusCtx, "<?php echo $id2; ?>", "arbutus-trend");
 
-    updateConclusion("downtown", "arbutus_ridge");
+    updateConclusion("<?php echo $id1; ?>", "<?php echo $id2; ?>");
 
     // Function to update a chart when an area is selected
     function updateChart(chart, area, trendPillId) {
@@ -143,33 +161,14 @@ window.onload = function() {
     // Event listener for the area selectors
     document.querySelectorAll('.area-selector').forEach(select => {
         select.addEventListener('change', function() {
-            const selectedArea = this.value;
-            const chartType = this.getAttribute('data-chart');
-            if (chartType === "downtown") {
-                updateChart(downtownChart, selectedArea, "downtown-trend");
-            } else if (chartType === "arbutus") {
-                updateChart(arbutusChart, selectedArea, "arbutus-trend");
-            }
-            const otherChart = chartType === "downtown" ? document.querySelector("[data-chart='arbutus']").value : document.querySelector("[data-chart='downtown']").value;
-            updateConclusion(selectedArea, otherChart);
+            const selectedArea1 = document.querySelector("[data-chart='downtown']").value;
+            const selectedArea2 = document.querySelector("[data-chart='arbutus']").value;
+            const newUrl = `template.php?id1=${selectedArea1}&id2=${selectedArea2}`;
+            window.location.href = newUrl;  // Reload with the updated URL
         });
     });
 };
 </script>
-
-
-<!-- Debugging Information -->
-<div>
-    <pre>
-    <?php 
-    // Uncomment these for debugging if needed
-    // var_dump($_GET); 
-    // var_dump($json);  
-    // var_dump($array);
-    ?>
-    </pre>
-</div>
-
 
 </body>
 </html>
