@@ -43,7 +43,7 @@ $id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arb
         <li>Map Builder</li>
         <li>Help & API</li>
         <li>Contact</li>
-        <li>Vancouver.ca</li>
+        <li>vancouver.ca</li>
     </ul>
 </div>
 </div>

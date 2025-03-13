@@ -112,24 +112,26 @@ select {
     width: 100%; /* Make the image fill the container */
     max-width: 150px; /* Set a reasonable max width */
     display: block; /* Remove extra spacing */
-    margin: 10px auto; /* Center the image */
+    margin: 10px 20px; 
 }
 
 
 .word-list {
     list-style-type: none;
-    padding: 0;
+   text-align: left;
+   padding:30px;
     margin: 20px 0;
+    color: white
 }
 
 .word-list li {
     font-size: 16px;
     margin: 10px 0;
-    color: white
+    line-height: 1.8;
 }
 
 /* Highlight the Dashboard item */
 .highlight {
-    color: #ff6347; /* This color can be changed to any other color */
+    color: #b2d2ff; /* This color can be changed to any other color */
     font-weight: bold;
 }
