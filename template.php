@@ -1,3 +1,5 @@
+hello 
+
 <?php
 // Read the JSON file
 $json = file_get_contents('data.json');
