@@ -1,20 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.sticky-nav {
+    background-color: #0379B0;
+    width: 20vw;
+    height:100vh ;
+    position: sticky;
+    top: 0;
+}
+
+.right-content {
+    background-color: #F7F6F9;
+    width:100%;
+    /* margin-left: 20vw; */
+    position: relative; /* Add this line */
+    top: 0;
+}
+
 h1 {
     font-family: 'Inter';
     font-size: 32px;
     font-weight: normal;
-    padding-left: 30px;
+    /* padding-left: 30px; */
 }
 
 h3 {
     font-family: 'Inter';
     font-size: 16px;
     font-weight: 600;
-    padding-left: 30px;
-    padding-bottom: 5px;
+    /* padding-left: 30px;
+    padding-bottom: 5px; */
 }
 
 body {
     font-family: Arial, sans-serif;
+    display:flex;
 }
 
 .chart-wrap {
@@ -67,7 +89,7 @@ select {
     max-width: 600px;         /* Max width */
     margin: 20px auto;        /* Center the conclusion container */
     text-align: center;       /* Center the text */
-    hello
+    
 }
 
 

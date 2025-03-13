@@ -1,4 +1,4 @@
-hello 
+
 
 <?php
 // Read the JSON file
@@ -29,6 +29,18 @@ $id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arb
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+
+<!-- LEFT SIDE -->
+<div class="sticky-nav">
+    <div class="logo"></div>
+    
+</div>
+
+
+
+
+<!-- RIGHT SIDE -->
+<div class="right-content">
 
 <!-- Title div -->
 <div class="title">
@@ -72,6 +84,8 @@ $id2 = isset($_GET["id2"]) ? $_GET["id2"] : 'arbutus_ridge';  // Default to 'arb
         <p id="conclusion-text">Loading...</p>
     </div>
 </div>
+</div>
+
 
 <!-- JavaScript for Charts -->
 <script>
