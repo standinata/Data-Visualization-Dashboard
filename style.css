@@ -113,8 +113,8 @@ select {
     margin-left: 10px;
 }
 
-.green { background-color: green; }
 .red { background-color: red; }
+.green { background-color: green; }
 
 .conclusion-card {
     border: 2px solid #ccc;  /* Light gray border around the conclusion box */

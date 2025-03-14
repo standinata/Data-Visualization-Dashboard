@@ -166,7 +166,7 @@ window.onload = function() {
                     {
                         label: "Vancouver",
                         data: data.vancouver,
-                        borderColor: 'rgba(0, 200, 0, 1)',
+                        borderColor: 'rgba(118,118,118,1)',
                         backgroundColor: 'rgba(0, 200, 0, 0)',
                         fill: true,
                         tension: 0.4
@@ -174,7 +174,7 @@ window.onload = function() {
                     {
                         label: area,
                         data: data[area],
-                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderColor: 'rgba(16,99,255, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0)',
                         fill: true,
                         tension: 0.4
@@ -206,7 +206,7 @@ window.onload = function() {
         select.addEventListener('change', function() {
             const selectedArea1 = document.querySelector("[data-chart='downtown']").value;
             const selectedArea2 = document.querySelector("[data-chart='arbutus']").value;
-            const newUrl = `template.php?id1=${selectedArea1}&id2=${selectedArea2}`;
+            const newUrl = `dashboard.php?id1=${selectedArea1}&id2=${selectedArea2}`;
             window.location.href = newUrl;  // Reload with the updated URL
         });
     });
