@@ -8,7 +8,7 @@ Original dashboard link: https://opendata.vancouver.ca/pages/indicator-disaggreg
 <h3>Figma Design</h3>
 <br>
 <br>
-![Wireframe](images/studio_dashboardwireframe.png)
+![Wireframe](studio_dashboardwireframe.png)
 
 
 
