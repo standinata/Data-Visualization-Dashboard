@@ -7,7 +7,7 @@ Original dashboard link: https://opendata.vancouver.ca/pages/indicator-disaggreg
 <br>
 <br>
 
-## Figma
+## View our Figma slides
 <br>
 Process Book: https://www.figma.com/proto/eyBze3OBKOPm7qIU1LkHg0/Studio-Raspberry-Pi?page-id=97%3A14&node-id=213-466&t=sy8b3biKlgIQA4qt-1
 
